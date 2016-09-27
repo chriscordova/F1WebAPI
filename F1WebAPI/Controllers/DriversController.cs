@@ -26,8 +26,7 @@ namespace F1WebAPI.Controllers
             F1Drivers f1Drivers = new F1Drivers();
 
             string baseURL = WebConfigurationManager.AppSettings["BaseURL"];
-            string controllerURL = "/en/championship/drivers.html";
-            string html = Functions.GetHTMLFromURL(controllerURL);
+            string html = Functions.GetHTMLFromFile(AppDomain.CurrentDomain.BaseDirectory + "\\Resources\\drivers-scrape.html");
             if (html.IsNullOrEmpty()) return null;
 
             HtmlDocument doc = new HtmlDocument();

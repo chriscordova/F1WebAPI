@@ -16,9 +16,9 @@ namespace F1WebAPI.Controllers
     [RoutePrefix("api/seasons")]
     public class SeasonsController : ApiController
     {
-        List<F1Season> seasons = GetJSONData();
+        List<F1Season> seasons = GetSeasonsData();
 
-        public static List<F1Season> GetJSONData()
+        public static List<F1Season> GetSeasonsData()
         {
             List<F1Season> returnData = new List<F1Season>();
 

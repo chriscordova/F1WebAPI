@@ -22,8 +22,7 @@ namespace F1WebAPI.Controllers
             List<DriverStanding> allStandings = new List<DriverStanding>();
             F1Standings f1Standings = new F1Standings();
 
-            string controllerURL = "/en/results.html/" + year + "/drivers.html";
-            string html = Functions.GetHTMLFromURL(controllerURL);
+            string html = Functions.GetHTMLFromFile(AppDomain.CurrentDomain.BaseDirectory + "\\Resources\\standings-"+year+"-scrape.html");
             if (html.IsNullOrEmpty()) return null;
             
             HtmlDocument doc = new HtmlDocument();

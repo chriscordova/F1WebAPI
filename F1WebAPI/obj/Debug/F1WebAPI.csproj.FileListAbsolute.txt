@@ -45,3 +45,4 @@ C:\Users\Chris\Documents\Development\F1WebAPI\F1WebAPI\bin\ScrapySharpAsync.dll
 C:\Users\Chris\Documents\Development\F1WebAPI\F1WebAPI\bin\FSharp.Core.xml
 C:\Users\Chris\Documents\Development\F1WebAPI\F1WebAPI\bin\HtmlAgilityPack.pdb
 C:\Users\Chris\Documents\Development\F1WebAPI\F1WebAPI\bin\HtmlAgilityPack.xml
+C:\Users\Chris\Documents\Development\F1WebAPI\F1WebAPI\obj\Debug\F1WebAPI.csprojResolveAssemblyReference.cache

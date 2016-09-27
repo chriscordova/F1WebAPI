@@ -26,8 +26,6 @@ namespace ExtensionMethods
             return obj == null;
         }
 
-        
-
         public static void Clean(this String str)
         {
             Functions.ReplaceWhitespace(str.Replace("\r", "").Replace("\n", ""), "");
@@ -67,6 +65,11 @@ namespace ExtensionMethods
             }
 
             return sReturn;
+        }
+
+        public static string GetHTMLFromFile(string fileURL)
+        {
+            return File.ReadAllText(fileURL);
         }
 
 
