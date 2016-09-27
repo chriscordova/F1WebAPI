@@ -1,0 +1,74 @@
+[
+	{
+		"Season": [
+			{
+				"Year": 2015,
+				"Country": "Australia",
+				"DateFrom": "13-03",
+				"DateTo": "15-03",
+				"City": "Melbourne",
+				"Schedule": [
+					{
+						"Event": "Practice1",
+						"Date": "13-03",
+						"Time": "12:30 - 14:00"
+					},
+					{
+						"Event": "Practice2",
+						"Date": "13-03",
+						"Time": "16:30 - 18:00"
+					},
+					{
+						"Event": "Practice3",
+						"Date": "14-03",
+						"Time": "14:00 - 15:00"
+					},
+					{
+						"Event": "Qualifying",
+						"Date": "14-03",
+						"Time": "12:30 - 14:00"
+					},
+					{
+						"Event": "Race",
+						"Date": "15-03",
+						"Time": "16:00 - 18:00"
+					}
+				]
+			},
+			{
+				"Year": 2015,
+				"Country": "Malaysia",
+				"DateFrom": "27-03",
+				"DateTo": "29-03",
+				"City": "Kuala Lumpur",
+				"Schedule": [
+					{
+						"Event": "Practice1",
+						"Date": "27-03",
+						"Time": "10:00 - 11:30"
+					},
+					{
+						"Event": "Practice2",
+						"Date": "27-03",
+						"Time": "14:00 - 15:30"
+					},
+					{
+						"Event": "Practice3",
+						"Date": "28-03",
+						"Time": "14:00 - 15:00"
+					},
+					{
+						"Event": "Qualifying",
+						"Date": "28-03",
+						"Time": "17:00 - 18:00"
+					},
+					{
+						"Event": "Race",
+						"Date": "29-03",
+						"Time": "15:00 - 17:00"
+					}
+				]
+			}
+		]
+	}
+]

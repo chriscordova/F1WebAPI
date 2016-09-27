@@ -1,0 +1,7 @@
+/api/seasons
+/api/seasons/2015
+/api/seasons/2015/Australia
+/api/drivers
+/api/drivers/6
+/api/standings/2015
+/api/standings/2015/1
