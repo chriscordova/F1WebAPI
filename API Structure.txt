@@ -1,3 +1,4 @@
+F1 Web API Structure
 /api/seasons
 /api/seasons/2015
 /api/seasons/2015/Australia
