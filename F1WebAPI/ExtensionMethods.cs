@@ -26,9 +26,9 @@ namespace ExtensionMethods
             return obj == null;
         }
 
-        public static void Clean(this String str)
+        public static string Clean(this String str)
         {
-            Functions.ReplaceWhitespace(str.Replace("\r", "").Replace("\n", ""), "");
+            return WebUtility.HtmlDecode(Functions.ReplaceWhitespace(str.Replace("\r", "").Replace("\n", ""), ""));
         }
 
     }
@@ -51,8 +51,8 @@ namespace ExtensionMethods
         public static string GetHTMLFromURL(string controllerURL)
         {
             string sReturn = string.Empty;
-            string baseURL = WebConfigurationManager.AppSettings["BaseURL"];
-            
+            string baseURL = GetConfigValue("baseURL");
+
             HttpWebRequest request = (HttpWebRequest)WebRequest.Create(baseURL + controllerURL);
             HttpWebResponse response = (HttpWebResponse)request.GetResponse();
 
@@ -70,6 +70,15 @@ namespace ExtensionMethods
         public static string GetHTMLFromFile(string fileURL)
         {
             return File.ReadAllText(fileURL);
+        }
+
+        public static string GetConfigValue(string key)
+        {
+            string Return = string.Empty;
+            string value = WebConfigurationManager.AppSettings[key];
+            if (!value.IsNullOrEmpty()) Return = value;
+
+            return Return;
         }
 
 

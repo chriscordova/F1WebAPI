@@ -21,11 +21,22 @@ namespace F1WebAPI.Models
     public class Season
     {
         public int Year { get; set; }
-        public string Country { get; set; }
+        public Country RaceCountry { get; set; }
         public string DateFrom { get; set; }
         public string DateTo { get; set; }
-        public string City { get; set; }
         public List<Schedule> Schedule { get; set; }
+    }
+
+    public class Country
+    {
+        public string Name { get; set; }
+        public int FirstGrandPrix { get; set; }
+        public int NumberOfLaps { get; set; }
+        public string CircuitLength { get; set; }
+        public string RaceDistance { get; set; }
+        public string LapRecord { get; set; }
+        public string CircuitImageURL { get; set; }
+
     }
 
 }

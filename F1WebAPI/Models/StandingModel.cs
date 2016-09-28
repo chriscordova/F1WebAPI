@@ -5,9 +5,21 @@ using System.Web;
 
 namespace F1WebAPI.Models
 {
-    public class F1Standings
+    public class F1ConstructorStandings
     {
-        public List<DriverStanding> Standings { get; set; }
+        public List<ConstructorStanding> ConstructorStandings { get; set; }
+    }
+
+    public class ConstructorStanding
+    {
+        public int Position { get; set; }
+        public string Team { get; set; }
+        public int Points { get; set; }
+    }
+
+    public class F1DriverStandings
+    {
+        public List<DriverStanding> DriverStandings { get; set; }
     }
 
     public class DriverStanding
@@ -18,4 +30,6 @@ namespace F1WebAPI.Models
         public string Team { get; set; }
         public int Points { get; set; }
     }
+
+
 }
