@@ -1,0 +1,8 @@
+﻿/////F1 Web API/////
+
+To Do:
+[X] Add security via token to make api call to ScrapeController functions
+[ ] Scrape SeasonsController
+[ ] '/{year}/{country}/timetable' information scrape
+[ ] TeamsController
+[X] Constructor Standings
