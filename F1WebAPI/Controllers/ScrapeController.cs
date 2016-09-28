@@ -68,6 +68,29 @@ namespace F1WebAPI.Controllers
                 }
             }
 
+            string controllerURL2 = Functions.GetConfigValue("teamsURL");
+            if (!controllerURL2.IsNullOrEmpty())
+            {
+                string[] teams = Functions.GetConfigValue("teamsArray").Split(',').ToArray();
+                if (teams.Length > 0)
+                {
+                    teams.ToList().ForEach(team =>
+                    {
+                        string controllerURL3 = controllerURL2.Replace("$team$", team);
+                        string html2 = Functions.GetHTMLFromURL(controllerURL3);
+                        if (!html2.IsNullOrEmpty())
+                        {
+                            string s = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Resources\\team-"+ team +"-scrape.html");
+
+                            using (StreamWriter sw = new StreamWriter(s))
+                            {
+                                sw.Write(html2);
+                            }
+                        }
+                    });
+                }       
+            }
+
             return Ok();
         }
 

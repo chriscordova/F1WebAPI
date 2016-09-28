@@ -2,7 +2,8 @@
 
 To Do:
 [X] Add security via token to make api call to ScrapeController functions
-[ ] Scrape SeasonsController
+[X] Scrape SeasonsController
 [ ] '/{year}/{country}/timetable' information scrape
-[ ] TeamsController
+[X] Teams Scrape
+[ ] Teams Controller
 [X] Constructor Standings

@@ -26,9 +26,21 @@ namespace ExtensionMethods
             return obj == null;
         }
 
-        public static string Clean(this String str)
+        public static string CleanHTML(this String str, bool removeWhitespace = true)
         {
-            return WebUtility.HtmlDecode(Functions.ReplaceWhitespace(str.Replace("\r", "").Replace("\n", ""), ""));
+            if (removeWhitespace)
+            {
+                return WebUtility.HtmlDecode(Functions.ReplaceWhitespace(str.Replace("\r", "").Replace("\n", ""), ""));
+            }
+            else
+            {
+                return WebUtility.HtmlDecode(str.Replace("\r", "").Replace("\n", ""));
+            }
+        }
+
+        public static string CleanString(this String str)
+        {
+            return str.Replace("\t", "").Trim();
         }
 
     }
