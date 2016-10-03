@@ -30,8 +30,8 @@ namespace F1WebAPI.Models
     public class Country
     {
         public string Name { get; set; }
-        public int FirstGrandPrix { get; set; }
-        public int NumberOfLaps { get; set; }
+        public string FirstGrandPrix { get; set; }
+        public string NumberOfLaps { get; set; }
         public string CircuitLength { get; set; }
         public string RaceDistance { get; set; }
         public string LapRecord { get; set; }

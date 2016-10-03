@@ -27,7 +27,7 @@ namespace F1WebAPI.Controllers
             if (html.IsNullOrEmpty()) return null;
 
             HtmlDocument doc = new HtmlDocument();
-            doc.LoadHtml(html);
+            doc.LoadHtml(html.CleanHTML(false));
 
             var DriverStandingNodes = doc.DocumentNode.SelectNodes("//table[contains(@class, 'resultsarchive-table')]//tr").ToList();
 

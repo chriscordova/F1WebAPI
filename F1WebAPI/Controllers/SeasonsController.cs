@@ -17,56 +17,69 @@ namespace F1WebAPI.Controllers
     [RoutePrefix("api/seasons")]
     public class SeasonsController : ApiController
     {
-        List<F1Season> seasons = new List<F1Season>();
+        List<F1Season> seasons = GetSeasonsData();
 
-        public static List<F1Season> GetSeasonsData(int year, string country)
+        public static List<F1Season> GetSeasonsData()
         {
             List<F1Season> returnData = new List<F1Season>();
 
             List<Season> allSeasons = new List<Season>();
 
-            string html = Functions.GetHTMLFromFile(AppDomain.CurrentDomain.BaseDirectory + "\\Resources\\seasons-" + year + "-" + country +"-scrape.html");
-            if (html.IsNullOrEmpty()) return null;
+            string[] years = Functions.GetConfigValue("yearsArray").Split(',').ToArray();
+            if (years.Length > 0)
+            {
+                years.ToList().ForEach(year =>
+                {
+                    string[] countries = Functions.GetConfigValue("countryArray").Split(',').ToArray();
+                    if (countries.Length > 0)
+                    {
+                        countries.ToList().ForEach(country =>
+                        {
+                            string html = Functions.GetHTMLFromFile(AppDomain.CurrentDomain.BaseDirectory + "\\Resources\\seasons-" + year + "-" + country + "-scrape.html");
+                            if (html.IsNullOrEmpty()) return; 
 
-            HtmlDocument doc = new HtmlDocument();
-            doc.LoadHtml(html);
+                            HtmlDocument doc = new HtmlDocument();
+                            doc.LoadHtml(html.CleanHTML(false));
 
-            List<Schedule> schedules = new List<Schedule>();
+                            List<Schedule> schedules = new List<Schedule>();
 
-            Season season = new Season();
-            string date = doc.DocumentNode.SelectNodes("//h2[contains(@class, 'race-data-header')]").FirstOrDefault().InnerText.Clean();
-            string[] dateArray = date.Split('–');
-            season.DateFrom = dateArray[0];
-            season.DateTo = dateArray[1].Substring(0,5);
-            season.Year = year;
-            season.Schedule = schedules;
+                            Season season = new Season();
+                            string date = doc.DocumentNode.SelectNodes("//h2[contains(@class, 'race-data-header')]").FirstOrDefault().InnerText;
+                            string[] dateArray = date.Split('–');
+                            season.DateFrom = dateArray[0].Trim();
+                            season.DateTo = dateArray[1].Trim().Substring(0, 5);
+                            season.Year = Convert.ToInt32(year);
+                            season.Schedule = schedules;
 
-            Country racecountry = new Country();
-            racecountry.Name = country;
+                            Country racecountry = new Country();
+                            racecountry.Name = country;
 
-            var circuitNodes = doc.DocumentNode.SelectNodes("//div[contains(@class, 'circuit-info-container')]").ToList();
+                            var circuitNodes = doc.DocumentNode.SelectNodes("//div[contains(@class, 'circuit-info-container')]").ToList();
 
-            racecountry.FirstGrandPrix = Convert.ToInt32(circuitNodes.Find(x => x.SelectNodes(".//h5[contains(@class, 'circuit-info-title')]").FirstOrDefault().InnerText == "First Grand Prix")
-                .SelectNodes(".//p[contains(@class, 'circuit-info-value')]").FirstOrDefault().InnerText);
-            racecountry.NumberOfLaps = Convert.ToInt32(circuitNodes.Find(x => x.SelectNodes(".//h5[contains(@class, 'circuit-info-title')]").FirstOrDefault().InnerText == "Number\nof Laps")
-                .SelectNodes(".//p[contains(@class, 'circuit-info-value')]").FirstOrDefault().InnerText);
-            racecountry.CircuitLength = circuitNodes.Find(x => x.SelectNodes(".//h5[contains(@class, 'circuit-info-title')]").FirstOrDefault().InnerText == "Circuit Length")
-                .SelectNodes(".//p[contains(@class, 'circuit-info-value')]").FirstOrDefault().InnerText.Clean();
-            racecountry.RaceDistance = circuitNodes.Find(x => x.SelectNodes(".//h5[contains(@class, 'circuit-info-title')]").FirstOrDefault().InnerText == "Race Distance")
-                .SelectNodes(".//p[contains(@class, 'circuit-info-value')]").FirstOrDefault().InnerText.Clean();
-            racecountry.LapRecord = circuitNodes.Find(x => x.SelectNodes(".//h5[contains(@class, 'circuit-info-title')]").FirstOrDefault().InnerText == "Lap\nRecord")
-                .SelectNodes(".//p[contains(@class, 'circuit-info-value')]").FirstOrDefault().InnerText.Clean();
+                            racecountry.FirstGrandPrix = circuitNodes.Find(x => x.SelectNodes(".//h5[contains(@class, 'circuit-info-title')]").FirstOrDefault().InnerText == "First Grand Prix")
+                                .SelectNodes(".//p[contains(@class, 'circuit-info-value')]").FirstOrDefault().InnerText.CleanString();
+                            racecountry.NumberOfLaps = circuitNodes.Find(x => x.SelectNodes(".//h5[contains(@class, 'circuit-info-title')]").FirstOrDefault().InnerText == "Numberof Laps")
+                                .SelectNodes(".//p[contains(@class, 'circuit-info-value')]").FirstOrDefault().InnerText.CleanString();
+                            racecountry.CircuitLength = circuitNodes.Find(x => x.SelectNodes(".//h5[contains(@class, 'circuit-info-title')]").FirstOrDefault().InnerText == "Circuit Length")
+                                .SelectNodes(".//p[contains(@class, 'circuit-info-value')]").FirstOrDefault().InnerText.CleanString();
+                            racecountry.RaceDistance = circuitNodes.Find(x => x.SelectNodes(".//h5[contains(@class, 'circuit-info-title')]").FirstOrDefault().InnerText == "Race Distance")
+                                .SelectNodes(".//p[contains(@class, 'circuit-info-value')]").FirstOrDefault().InnerText.CleanString();
+                            racecountry.LapRecord = circuitNodes.Find(x => x.SelectNodes(".//h5[contains(@class, 'circuit-info-title')]").FirstOrDefault().InnerText == "LapRecord")
+                                .SelectNodes(".//p[contains(@class, 'circuit-info-value')]").FirstOrDefault().InnerText.CleanString();
 
-            //string scheduleNodes = doc.DocumentNode.SelectNodes("//dl[contains(@class, 'race-data-dl')]//").FirstOrDefault().InnerText;
-            season.RaceCountry = racecountry;
+                            //string scheduleNodes = doc.DocumentNode.SelectNodes("//dl[contains(@class, 'race-data-dl')]//").FirstOrDefault().InnerText;
+                            season.RaceCountry = racecountry;
 
-            allSeasons.Add(season);
+                            allSeasons.Add(season);
+                        });
+                    }
+                });
+            }
 
             F1Season f1season = new F1Season();
             f1season.Season = allSeasons;
 
             returnData.Add(f1season);
-            /////////////////////////////////
 
             return returnData;
         }
@@ -99,14 +112,34 @@ namespace F1WebAPI.Controllers
             return Ok(mySeasons);
         }
 
+        [Route("{country}")]
+        public IHttpActionResult GetSeasonByCountry(string country)
+        {
+            List<Season> mySeasons = new List<Season>();
+            foreach (F1Season item in seasons)
+            {
+                var a = item.Season;
+                a.ForEach(s =>
+                {
+                    if (s.RaceCountry.Name == country) mySeasons.Add(s);
+                });
+
+            }
+
+            if (mySeasons.IsNull())
+            {
+                return NotFound();
+            }
+
+            return Ok(mySeasons);
+        }
+
         [Route("{year:int}/{country}")]
         public IHttpActionResult GetSeasonByCountry(int year, string country)
         {
-            List<F1Season> myStandings = GetSeasonsData(year, country);
-
             Season mySeason = new Season();
             List<Season> mySeasons = new List<Season>();
-            foreach (F1Season item in myStandings)
+            foreach (F1Season item in seasons)
             {
                 var a = item.Season;
                 a.ForEach(s =>

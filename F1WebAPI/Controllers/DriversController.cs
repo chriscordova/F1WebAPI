@@ -30,7 +30,7 @@ namespace F1WebAPI.Controllers
             if (html.IsNullOrEmpty()) return null;
 
             HtmlDocument doc = new HtmlDocument();
-            doc.LoadHtml(html);
+            doc.LoadHtml(html.CleanHTML(false));
 
             var DriverNodes = doc.DocumentNode.SelectNodes("//a[contains(@class, 'driver-teaser')]").ToList();
 
@@ -41,7 +41,13 @@ namespace F1WebAPI.Controllers
                 driver.DriverURL = baseURL + n.SelectNodes("//a[contains(@class, 'driver-title')]").FirstOrDefault().Attributes[0].Value;
                 driver.DriverNumber = Convert.ToInt32(n.SelectNodes(".//div[contains(@class, 'driver-number')]").FirstOrDefault().InnerText);
                 driver.ImageURL = baseURL + n.SelectNodes(".//img[contains(@class, 'fom-image')]").FirstOrDefault().Attributes.Where(s => s.Name == "src").FirstOrDefault().Value;
-                driver.Team = n.SelectNodes(".//p[contains(@class, 'driver-team')]").FirstOrDefault().InnerText;
+
+                Team team = new Team();
+                string teamNameNode = n.SelectNodes(".//p[contains(@class, 'driver-team')]").FirstOrDefault().InnerText;
+
+                //get team url and fill Team class here
+
+                driver.Team = team; 
 
                 allDrivers.Add(driver);
             }
