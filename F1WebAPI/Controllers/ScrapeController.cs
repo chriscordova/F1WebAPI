@@ -105,18 +105,60 @@ namespace F1WebAPI.Controllers
                 {
                     string controllerURL = Functions.GetConfigValue("driverStandingsURL").Replace("$year$", y);
                     string html = Functions.GetHTMLFromURL(controllerURL);
-                    string s = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Resources\\driverstandings-" + y + "-scrape.html");
-                    using (StreamWriter sw = new StreamWriter(s))
+                    if (!html.IsNullOrEmpty())
                     {
-                        sw.Write(html);
+                        string s = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Resources\\driverstandings-" + y + "-scrape.html");
+                        using (StreamWriter sw = new StreamWriter(s))
+                        {
+                            sw.Write(html);
+                        }
                     }
-
+                    
                     string controllerURL2 = Functions.GetConfigValue("constructorStandingsURL").Replace("$year$", y);
                     string html2 = Functions.GetHTMLFromURL(controllerURL2);
-                    string s2 = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Resources\\constructorstandings-" + y + "-scrape.html");
-                    using (StreamWriter sw = new StreamWriter(s2))
+                    if (!html2.IsNullOrEmpty())
                     {
-                        sw.Write(html2);
+                        string s2 = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Resources\\constructorstandings-" + y + "-scrape.html");
+                        using (StreamWriter sw = new StreamWriter(s2))
+                        {
+                            sw.Write(html2);
+                        }
+                    }
+                    
+                });
+            }
+
+            return Ok();
+        }
+
+        [HttpGet()]
+        [Route("results")]
+        public IHttpActionResult ScrapeResults()
+        {
+            string[] years = Functions.GetConfigValue("yearsArray").Split(',').ToArray();
+            if (years.Length > 0)
+            {
+                years.ToList().ForEach(y =>
+                {
+                    string[] countries = Functions.GetConfigValue(y + "Results").Split(',').ToArray();
+                    if (countries.Length > 0)
+                    {
+                        countries.ToList().ForEach(c =>
+                        {
+                            string controllerURL = Functions.GetConfigValue("resultsURL").Replace("$year$", y).Replace("$country$", c);
+                            if (!controllerURL.IsNullOrEmpty())
+                            {
+                                string html = Functions.GetHTMLFromURL(controllerURL);
+                                if (!html.IsNullOrEmpty())
+                                {
+                                    string s = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Resources\\results-" + y + "-" + c.Substring(c.IndexOf('/') + 1) + "-scrape.html");
+                                    using (StreamWriter sw = new StreamWriter(s))
+                                    {
+                                        sw.Write(html);
+                                    }
+                                }
+                            }
+                        });
                     }
                 });
             }
