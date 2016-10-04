@@ -137,6 +137,7 @@
   <ItemGroup>
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\DriversController.cs" />
+    <Compile Include="Controllers\ResultsController.cs" />
     <Compile Include="Controllers\ScrapeController.cs" />
     <Compile Include="Controllers\SeasonsController.cs" />
     <Compile Include="Controllers\StandingsController.cs" />
@@ -146,6 +147,7 @@
     </Compile>
     <Compile Include="ActionFilters\CustomAuthorize.cs" />
     <Compile Include="Models\DriverModel.cs" />
+    <Compile Include="Models\ResultModel.cs" />
     <Compile Include="Models\SeasonModel.cs" />
     <Compile Include="Models\StandingModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

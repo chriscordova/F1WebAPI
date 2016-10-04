@@ -14,6 +14,8 @@ C:\Users\Chris\Documents\Development\F1WebAPI\F1WebAPI\bin\roslyn\VBCSCompiler.e
 C:\Users\Chris\Documents\Development\F1WebAPI\F1WebAPI\bin\F1WebAPI.dll.config
 C:\Users\Chris\Documents\Development\F1WebAPI\F1WebAPI\bin\F1WebAPI.dll
 C:\Users\Chris\Documents\Development\F1WebAPI\F1WebAPI\bin\F1WebAPI.pdb
+C:\Users\Chris\Documents\Development\F1WebAPI\F1WebAPI\bin\FSharp.Core.dll
+C:\Users\Chris\Documents\Development\F1WebAPI\F1WebAPI\bin\HtmlAgilityPack.dll
 C:\Users\Chris\Documents\Development\F1WebAPI\F1WebAPI\bin\Microsoft.AI.Agent.Intercept.dll
 C:\Users\Chris\Documents\Development\F1WebAPI\F1WebAPI\bin\Microsoft.AI.DependencyCollector.dll
 C:\Users\Chris\Documents\Development\F1WebAPI\F1WebAPI\bin\Microsoft.AI.PerfCounterCollector.dll
@@ -23,9 +25,14 @@ C:\Users\Chris\Documents\Development\F1WebAPI\F1WebAPI\bin\Microsoft.AI.WindowsS
 C:\Users\Chris\Documents\Development\F1WebAPI\F1WebAPI\bin\Microsoft.ApplicationInsights.dll
 C:\Users\Chris\Documents\Development\F1WebAPI\F1WebAPI\bin\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll
 C:\Users\Chris\Documents\Development\F1WebAPI\F1WebAPI\bin\Newtonsoft.Json.dll
+C:\Users\Chris\Documents\Development\F1WebAPI\F1WebAPI\bin\ScrapySharp.Core.dll
+C:\Users\Chris\Documents\Development\F1WebAPI\F1WebAPI\bin\ScrapySharpAsync.dll
 C:\Users\Chris\Documents\Development\F1WebAPI\F1WebAPI\bin\System.Net.Http.Formatting.dll
 C:\Users\Chris\Documents\Development\F1WebAPI\F1WebAPI\bin\System.Web.Http.dll
 C:\Users\Chris\Documents\Development\F1WebAPI\F1WebAPI\bin\System.Web.Http.WebHost.dll
+C:\Users\Chris\Documents\Development\F1WebAPI\F1WebAPI\bin\FSharp.Core.xml
+C:\Users\Chris\Documents\Development\F1WebAPI\F1WebAPI\bin\HtmlAgilityPack.pdb
+C:\Users\Chris\Documents\Development\F1WebAPI\F1WebAPI\bin\HtmlAgilityPack.xml
 C:\Users\Chris\Documents\Development\F1WebAPI\F1WebAPI\bin\Microsoft.AI.DependencyCollector.xml
 C:\Users\Chris\Documents\Development\F1WebAPI\F1WebAPI\bin\Microsoft.AI.ServerTelemetryChannel.xml
 C:\Users\Chris\Documents\Development\F1WebAPI\F1WebAPI\bin\Microsoft.AI.Web.xml
@@ -38,11 +45,3 @@ C:\Users\Chris\Documents\Development\F1WebAPI\F1WebAPI\bin\System.Web.Http.xml
 C:\Users\Chris\Documents\Development\F1WebAPI\F1WebAPI\bin\System.Web.Http.WebHost.xml
 C:\Users\Chris\Documents\Development\F1WebAPI\F1WebAPI\obj\Debug\F1WebAPI.dll
 C:\Users\Chris\Documents\Development\F1WebAPI\F1WebAPI\obj\Debug\F1WebAPI.pdb
-C:\Users\Chris\Documents\Development\F1WebAPI\F1WebAPI\bin\FSharp.Core.dll
-C:\Users\Chris\Documents\Development\F1WebAPI\F1WebAPI\bin\HtmlAgilityPack.dll
-C:\Users\Chris\Documents\Development\F1WebAPI\F1WebAPI\bin\ScrapySharp.Core.dll
-C:\Users\Chris\Documents\Development\F1WebAPI\F1WebAPI\bin\ScrapySharpAsync.dll
-C:\Users\Chris\Documents\Development\F1WebAPI\F1WebAPI\bin\FSharp.Core.xml
-C:\Users\Chris\Documents\Development\F1WebAPI\F1WebAPI\bin\HtmlAgilityPack.pdb
-C:\Users\Chris\Documents\Development\F1WebAPI\F1WebAPI\bin\HtmlAgilityPack.xml
-C:\Users\Chris\Documents\Development\F1WebAPI\F1WebAPI\obj\Debug\F1WebAPI.csprojResolveAssemblyReference.cache

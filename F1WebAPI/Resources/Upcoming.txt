@@ -5,5 +5,8 @@ To Do:
 [X] Scrape SeasonsController
 [ ] '/{year}/{country}/timetable' information scrape
 [X] Teams Scrape
-[ ] Teams Controller
+[X] Teams Controller
 [X] Constructor Standings
+[X] Results Scrape/Model/Controller
+[ ] Driver biographies /drivers/name.html
+[ ] Need to access team info by team name

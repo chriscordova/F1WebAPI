@@ -79,6 +79,41 @@ namespace ExtensionMethods
             return sReturn;
         }
 
+        internal static string GetScrapedTeamName(string TeamName)
+        {
+            string sReturn = string.Empty;
+            switch (TeamName.Trim())
+            {
+                case "Red Bull Racing":
+                    {
+                        sReturn = "Red-Bull";
+                    }
+                    break;
+                case "MRT":
+                    {
+                        sReturn = "Manor";
+                    }
+                    break;
+                case "Force India":
+                    {
+                        sReturn = "Force-India";
+                    }
+                    break;
+                case "Toro Rosso":
+                    {
+                        sReturn = "Toro-Rosso";
+                    }
+                    break;
+                default:
+                    {
+                        sReturn = TeamName.Trim();
+                    }
+                    break;
+            }
+
+            return sReturn;
+        }
+
         public static string GetHTMLFromFile(string fileURL)
         {
             return File.ReadAllText(fileURL);

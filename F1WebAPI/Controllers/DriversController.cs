@@ -43,9 +43,31 @@ namespace F1WebAPI.Controllers
                 driver.ImageURL = baseURL + n.SelectNodes(".//img[contains(@class, 'fom-image')]").FirstOrDefault().Attributes.Where(s => s.Name == "src").FirstOrDefault().Value;
 
                 Team team = new Team();
-                string teamNameNode = n.SelectNodes(".//p[contains(@class, 'driver-team')]").FirstOrDefault().InnerText;
+                string teamNameNode = n.SelectNodes(".//p[contains(@class, 'driver-team')]").FirstOrDefault().InnerText.Trim();
 
                 //get team url and fill Team class here
+                string teamHTML = Functions.GetHTMLFromFile(AppDomain.CurrentDomain.BaseDirectory + "\\Resources\\team-"+ Functions.GetScrapedTeamName(teamNameNode) + "-scrape.html");
+
+                HtmlDocument teamDoc = new HtmlDocument();
+                teamDoc.LoadHtml(teamHTML.CleanHTML(false));
+
+                var teamNodes = teamDoc.DocumentNode.SelectNodes("//table[contains(@class, 'stat-list')]").ToList();
+
+                foreach(HtmlNode t in teamNodes)
+                {
+                    team.Name = teamNameNode;
+                    team.FullName = t.SelectNodes(".//tr[1]//td").FirstOrDefault().InnerText;
+                    team.Base = t.SelectNodes(".//tr[2]//td").FirstOrDefault().InnerText;
+                    team.TeamChief = t.SelectNodes(".//tr[3]//td").FirstOrDefault().InnerText;
+                    team.TechnicalChief = t.SelectNodes(".//tr[4]//td").FirstOrDefault().InnerText;
+                    team.Chassis = t.SelectNodes(".//tr[5]//td").FirstOrDefault().InnerText;
+                    team.PowerUnit = t.SelectNodes(".//tr[6]//td").FirstOrDefault().InnerText;
+                    team.FirstTeamEntry = t.SelectNodes(".//tr[7]//td").FirstOrDefault().InnerText;
+                    team.WorldChampionships = t.SelectNodes(".//tr[8]//td").FirstOrDefault().InnerText;
+                    team.HighestRaceFinish = t.SelectNodes(".//tr[9]//td").FirstOrDefault().InnerText;
+                    team.PolePositions = t.SelectNodes(".//tr[10]//td").FirstOrDefault().InnerText;
+                    team.FastestLaps = t.SelectNodes(".//tr[11]//td").FirstOrDefault().InnerText;
+                }
 
                 driver.Team = team; 
 
