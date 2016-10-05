@@ -45,3 +45,4 @@ C:\Users\Chris\Documents\Development\F1WebAPI\F1WebAPI\bin\System.Web.Http.xml
 C:\Users\Chris\Documents\Development\F1WebAPI\F1WebAPI\bin\System.Web.Http.WebHost.xml
 C:\Users\Chris\Documents\Development\F1WebAPI\F1WebAPI\obj\Debug\F1WebAPI.dll
 C:\Users\Chris\Documents\Development\F1WebAPI\F1WebAPI\obj\Debug\F1WebAPI.pdb
+C:\Users\Chris\Documents\Development\F1WebAPI\F1WebAPI\obj\Debug\F1WebAPI.csprojResolveAssemblyReference.cache
