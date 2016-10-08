@@ -38,7 +38,7 @@ namespace F1WebAPI.Controllers
             {
                 Driver driver = new Driver();
                 driver.Name = n.SelectNodes(".//h1[contains(@class, 'driver-name')]").FirstOrDefault().InnerText;
-                driver.DriverURL = baseURL + n.SelectNodes("//a[contains(@class, 'driver-title')]").FirstOrDefault().Attributes[0].Value;
+                driver.DriverURL = baseURL + n.Attributes[0].Value;
                 driver.DriverNumber = Convert.ToInt32(n.SelectNodes(".//div[contains(@class, 'driver-number')]").FirstOrDefault().InnerText);
                 driver.ImageURL = baseURL + n.SelectNodes(".//img[contains(@class, 'fom-image')]").FirstOrDefault().Attributes.Where(s => s.Name == "src").FirstOrDefault().Value;
 
