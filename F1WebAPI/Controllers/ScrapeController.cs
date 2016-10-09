@@ -91,6 +91,29 @@ namespace F1WebAPI.Controllers
                 }       
             }
 
+            string controllerURL4 = Functions.GetConfigValue("driverBioURL");
+            if (!controllerURL4.IsNullOrEmpty())
+            {
+                string[] drivers = Functions.GetConfigValue("CurrentDrivers").Split(',').ToArray();
+                if (drivers.Length > 0)
+                {
+                    drivers.ToList().ForEach(driver =>
+                    {
+                        string controllerURL5 = controllerURL4.Replace("$name$", Functions.CleanName( driver.Replace(" ","-").ToLower()));
+                        string html = Functions.GetHTMLFromURL(controllerURL5);
+                        if (!html.IsNullOrEmpty())
+                        {
+                            string s = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Resources\\driver-bio-" + driver + "-scrape.html");
+
+                            using (StreamWriter sw = new StreamWriter(s))
+                            {
+                                sw.Write(html);
+                            }
+                        }
+                    });
+                }
+            }
+
             return Ok();
         }
 

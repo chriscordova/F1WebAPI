@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Text;
 using System.Text.RegularExpressions;
 using System.Web;
 using System.Web.Configuration;
@@ -53,11 +55,31 @@ namespace ExtensionMethods
             return regexWhitespace.Replace(input, replacement);
         }
 
-        public static DateTime FormatDate()
+        public static string CleanName(string s)
+        {
+            var decomposed = s.Normalize(NormalizationForm.FormD);
+            var filtered = decomposed.Where(c => char.GetUnicodeCategory(c) != UnicodeCategory.NonSpacingMark);
+            var newString = new String(filtered.ToArray());
+
+            return newString;
+        }
+
+        public static DateTime FormatDate(string sDate)
         {
             DateTime date = new DateTime();
+            date = DateTime.ParseExact(sDate, "dd/MM/yyyy", CultureInfo.InvariantCulture);
 
             return date;
+        }
+
+        public static int GetAge(DateTime birthDate)
+        {
+            int age = 0;
+            var today = DateTime.Today;
+            age = today.Year - birthDate.Year;
+            if (birthDate > today.AddYears(-age)) age--;
+
+            return age;
         }
 
         public static string GetHTMLFromURL(string controllerURL)
