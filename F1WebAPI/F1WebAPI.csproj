@@ -147,6 +147,7 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="ActionFilters\CustomAuthorize.cs" />
+    <Compile Include="Models\ApiResponse.cs" />
     <Compile Include="Models\DriverModel.cs" />
     <Compile Include="Models\ResultModel.cs" />
     <Compile Include="Models\SeasonModel.cs" />

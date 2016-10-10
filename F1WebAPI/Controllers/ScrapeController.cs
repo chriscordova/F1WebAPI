@@ -7,6 +7,8 @@ using System.Net.Http;
 using System.Web.Configuration;
 using System.Web.Http;
 using System.Web.Http.Filters;
+using System.Web.Http.Results;
+using F1WebAPI.Models;
 
 namespace F1WebAPI.Controllers
 {
@@ -16,7 +18,7 @@ namespace F1WebAPI.Controllers
     {
         [HttpGet()]
         [Route("seasons")]
-        public IHttpActionResult ScrapeSeasons()
+        public JsonResult<ApiResponse> ScrapeSeasons()
         {
             string[] years = Functions.GetConfigValue("yearsArray").Split(',').ToArray();
             if (years.Length > 0)
@@ -46,12 +48,12 @@ namespace F1WebAPI.Controllers
                 });
             }
 
-            return Ok();
+            return Json(new ApiResponse() { Success = true });
         }
 
         [HttpGet()]
         [Route("drivers")]
-        public IHttpActionResult ScrapeDrivers()
+        public JsonResult<ApiResponse> ScrapeDrivers()
         {
             string controllerURL = Functions.GetConfigValue("driversURL");
             if (!controllerURL.IsNullOrEmpty())
@@ -114,12 +116,12 @@ namespace F1WebAPI.Controllers
                 }
             }
 
-            return Ok();
+            return Json(new ApiResponse() { Success = true });
         }
 
         [HttpGet()]
         [Route("standings")]
-        public IHttpActionResult ScrapeStandings()
+        public JsonResult<ApiResponse> ScrapeStandings()
         {
             string[] years = Functions.GetConfigValue("yearsArray").Split(',').ToArray();
             if (years.Length > 0)
@@ -151,12 +153,12 @@ namespace F1WebAPI.Controllers
                 });
             }
 
-            return Ok();
+            return Json(new ApiResponse() { Success = true });
         }
 
         [HttpGet()]
         [Route("results")]
-        public IHttpActionResult ScrapeResults()
+        public JsonResult<ApiResponse> ScrapeResults()
         {
             string[] years = Functions.GetConfigValue("yearsArray").Split(',').ToArray();
             if (years.Length > 0)
@@ -186,7 +188,7 @@ namespace F1WebAPI.Controllers
                 });
             }
 
-            return Ok();
+            return Json(new ApiResponse() { Success = true });
         }
     }
 }
