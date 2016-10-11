@@ -165,6 +165,7 @@ namespace F1WebAPI.Controllers
             {
                 years.ToList().ForEach(y =>
                 {
+                    //Per Country
                     string[] countries = Functions.GetConfigValue(y + "Results").Split(',').ToArray();
                     if (countries.Length > 0)
                     {
@@ -184,6 +185,21 @@ namespace F1WebAPI.Controllers
                                 }
                             }
                         });
+                    }
+
+                    //Year Results
+                    string controllerURL2 = Functions.GetConfigValue("allResultsURL").Replace("$year$", y);
+                    if (!controllerURL2.IsNullOrEmpty())
+                    {
+                        string html2 = Functions.GetHTMLFromURL(controllerURL2);
+                        if (!html2.IsNullOrEmpty())
+                        {
+                            string s = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Resources\\results-" + y + "-scrape.html");
+                            using (StreamWriter sw = new StreamWriter(s))
+                            {
+                                sw.Write(html2);
+                            }
+                        }
                     }
                 });
             }

@@ -19,5 +19,10 @@ namespace F1WebAPI.Models
         public int Laps { get; set; }
         public string TimeOrRetiredResult { get; set; }
         public int Points { get; set; }
+
+        //Year Result
+        public string GrandPrix { get; set; }
+        public string Date { get; set; }
+        public string Winner { get; set; }
     }
 }
