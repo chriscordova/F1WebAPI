@@ -47,8 +47,26 @@ namespace F1WebAPI.Controllers
                             string date = doc.DocumentNode.SelectNodes("//h2[contains(@class, 'race-data-header')]").FirstOrDefault().InnerText;
                             string[] dateArray = date.Split('–');
                             season.DateFrom = dateArray[0].Trim();
-                            season.DateTo = dateArray[1].Trim().Substring(0, 5);
+                            season.DateTo = dateArray[1].Trim().Substring(0, 6);
+                            season.Month = dateArray[1].Trim().Substring(7, 3);
                             season.Year = Convert.ToInt32(year);
+
+                            var scheduleNodes = doc.DocumentNode.SelectNodes("//dl[contains(@class, 'race-data-dl')]").FirstOrDefault();
+                            
+                            var eventNodes = scheduleNodes.SelectNodes(".//dt[contains(@class, 'race-data-item')]").ToList();
+                            var dateNodes = scheduleNodes.SelectNodes(".//dd[contains(@class, 'day')]").ToList();
+                            var timeNodes = scheduleNodes.SelectNodes(".//dd[contains(@class, 'time')]").ToList();
+
+                            for (int i = 0; i < 5; i++)
+                            {
+                                Schedule schedule = new Schedule();
+                                schedule.Event = eventNodes.ElementAt(i).InnerText;
+                                schedule.Date = dateNodes.ElementAt(i).InnerText;
+                                schedule.Time = timeNodes.ElementAt(i).InnerText;
+
+                                schedules.Add(schedule);
+                            }
+                            
                             season.Schedule = schedules;
 
                             Country racecountry = new Country();
@@ -66,8 +84,8 @@ namespace F1WebAPI.Controllers
                                 .SelectNodes(".//p[contains(@class, 'circuit-info-value')]").FirstOrDefault().InnerText.CleanString();
                             racecountry.LapRecord = circuitNodes.Find(x => x.SelectNodes(".//h5[contains(@class, 'circuit-info-title')]").FirstOrDefault().InnerText == "LapRecord")
                                 .SelectNodes(".//p[contains(@class, 'circuit-info-value')]").FirstOrDefault().InnerText.CleanString();
+                            racecountry.CircuitImageURL = Functions.GetConfigValue("BaseURL") + doc.DocumentNode.SelectNodes("//div[contains(@class, 'track-map')]").FirstOrDefault().SelectNodes(".//img").FirstOrDefault().Attributes[0].Value;
 
-                            //string scheduleNodes = doc.DocumentNode.SelectNodes("//dl[contains(@class, 'race-data-dl')]//").FirstOrDefault().InnerText;
                             season.RaceCountry = racecountry;
 
                             allSeasons.Add(season);
