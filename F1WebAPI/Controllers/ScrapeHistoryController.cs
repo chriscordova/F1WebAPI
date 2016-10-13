@@ -7,10 +7,10 @@ using System.Web.Http;
 using F1WebAPI.Models;
 using NanoApi;
 using F1WebAPI.ActionFilters;
+using ExtensionMethods;
 
 namespace F1WebAPI.Controllers
 {
-    [CustomAuthorize]
     [RoutePrefix("api/scrapelog")]
     public class ScrapeHistoryController : ApiController
     {
@@ -18,10 +18,12 @@ namespace F1WebAPI.Controllers
         [Route("get/{type}")]
         public ApiResponse GetScrapeLastUpdated(string type)
         {
+            string lastUpdated = string.Empty;
             try
             {
                 var db = NanoApi.JsonFile<ScrapeHistory.Log>.GetInstance(AppDomain.CurrentDomain.BaseDirectory + "\\Resources\\", "scrape_history.json");
-                var driversLastUpdated = db.Select(s => s.scrapename == type);
+                string driversLastUpdated = db.Select(s => s.scrapename == type).FirstOrDefault().lastupdated;
+                if (!driversLastUpdated.IsNullOrEmpty()) lastUpdated = driversLastUpdated;
             }
             catch (Exception ex)
             {
@@ -29,9 +31,10 @@ namespace F1WebAPI.Controllers
             }
             
 
-            return new ApiResponse() { Success = true };
+            return new ApiResponse() { Success = true, Data = lastUpdated };
         }
 
+        [CustomAuthorize]
         [HttpPost()]
         [Route("update/{type}")]
         public ApiResponse UpdateScrapeLastUpdated(string type)
@@ -47,7 +50,7 @@ namespace F1WebAPI.Controllers
             }
             
 
-            return new ApiResponse() { Success = true };
+            return new ApiResponse() { Success = true, Data = DateTime.Now.ToString() };
         }
 
 

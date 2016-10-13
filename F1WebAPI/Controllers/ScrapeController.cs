@@ -17,9 +17,35 @@ namespace F1WebAPI.Controllers
     public class ScrapeController : ApiController
     {
         [HttpGet()]
-        [Route("seasons")]
-        public JsonResult<ApiResponse> ScrapeSeasons()
+        [Route("seasons/{currentyear?}")]
+        public JsonResult<ApiResponse> ScrapeSeasons(string currentyear = "")
         {
+            if (!currentyear.IsNullOrEmpty())
+            {
+                string[] countries = Functions.GetConfigValue("countryArray").Split(',').ToArray();
+                if (countries.Length > 0)
+                {
+                    countries.ToList().ForEach(c =>
+                    {
+                        string controllerURL = Functions.GetConfigValue("seasonsCountryURL").Replace("$year$", currentyear).Replace("$country$", c);
+                        if (!controllerURL.IsNullOrEmpty())
+                        {
+                            string html = Functions.GetHTMLFromURL(controllerURL);
+                            if (!html.IsNullOrEmpty())
+                            {
+                                string s = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Resources\\seasons-" + currentyear + "-" + c + "-scrape.html");
+                                using (StreamWriter sw = new StreamWriter(s))
+                                {
+                                    sw.Write(html);
+                                }
+                            }
+                        }
+                    });
+                }
+
+                return Json(new ApiResponse() { Success = true });
+            }
+
             string[] years = Functions.GetConfigValue("yearsArray").Split(',').ToArray();
             if (years.Length > 0)
             {
@@ -120,9 +146,36 @@ namespace F1WebAPI.Controllers
         }
 
         [HttpGet()]
-        [Route("standings")]
-        public JsonResult<ApiResponse> ScrapeStandings()
+        [Route("standings/{currentyear?}")]
+        public JsonResult<ApiResponse> ScrapeStandings(string currentyear = "")
         {
+            if (!currentyear.IsNullOrEmpty())
+            {
+                string controllerURL = Functions.GetConfigValue("driverStandingsURL").Replace("$year$", currentyear);
+                string html = Functions.GetHTMLFromURL(controllerURL);
+                if (!html.IsNullOrEmpty())
+                {
+                    string s = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Resources\\driverstandings-" + currentyear + "-scrape.html");
+                    using (StreamWriter sw = new StreamWriter(s))
+                    {
+                        sw.Write(html);
+                    }
+                }
+
+                string controllerURL2 = Functions.GetConfigValue("constructorStandingsURL").Replace("$year$", currentyear);
+                string html2 = Functions.GetHTMLFromURL(controllerURL2);
+                if (!html2.IsNullOrEmpty())
+                {
+                    string s2 = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Resources\\constructorstandings-" + currentyear + "-scrape.html");
+                    using (StreamWriter sw = new StreamWriter(s2))
+                    {
+                        sw.Write(html2);
+                    }
+                }
+
+                return Json(new ApiResponse() { Success = true });
+            }
+
             string[] years = Functions.GetConfigValue("yearsArray").Split(',').ToArray();
             if (years.Length > 0)
             {
