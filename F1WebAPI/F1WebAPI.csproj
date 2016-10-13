@@ -84,6 +84,10 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="NanoApi.JsonFile, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\JsonFileDB.0.8.8.2\lib\net45\NanoApi.JsonFile.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="ScrapySharp.Core, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\ScrapySharp.2.6.2\lib\net45\ScrapySharp.Core.dll</HintPath>
       <Private>True</Private>
@@ -140,6 +144,7 @@
     <Compile Include="Controllers\DriversController.cs" />
     <Compile Include="Controllers\ResultsController.cs" />
     <Compile Include="Controllers\ScrapeController.cs" />
+    <Compile Include="Controllers\ScrapeHistoryController.cs" />
     <Compile Include="Controllers\SeasonsController.cs" />
     <Compile Include="Controllers\StandingsController.cs" />
     <Compile Include="ExtensionMethods.cs" />
@@ -150,6 +155,7 @@
     <Compile Include="Models\ApiResponse.cs" />
     <Compile Include="Models\DriverModel.cs" />
     <Compile Include="Models\ResultModel.cs" />
+    <Compile Include="Models\ScrapeHistory.cs" />
     <Compile Include="Models\SeasonModel.cs" />
     <Compile Include="Models\StandingModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -159,13 +165,10 @@
     <Content Include="ApplicationInsights.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-<<<<<<< HEAD
     <Content Include="Resources\db.json" />
     <None Include="Properties\PublishProfiles\AWS F1WebAPI Publish.pubxml" />
-=======
     <None Include="Properties\PublishProfiles\AWS Deployment.pubxml" />
     <None Include="Properties\PublishProfiles\AWS F1WebAPI Deployment.pubxml" />
->>>>>>> 973c7fb4331d5882116441487430c3ceb47081f5
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
