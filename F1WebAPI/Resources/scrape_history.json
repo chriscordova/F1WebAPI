@@ -1,0 +1,32 @@
+{
+  "_header": {
+    "descriptor": null,
+    "version": null,
+    "title": "F1 Web API Scrape History",
+    "createDate": "2015-12-24T11:58:00Z",
+    "updateDate": "2016-10-13T06:31:42.3144366Z",
+    "idMax": 0
+  },
+  "data": [
+    {
+      "id": 1,
+      "scrapename": "drivers",
+      "lastupdated": "13/10/2016 17:31:42"
+    },
+    {
+      "id": 2,
+      "scrapename": "standings",
+      "lastupdated": ""
+    },
+    {
+      "id": 3,
+      "scrapename": "seasons",
+      "lastupdated": ""
+    },
+    {
+      "id": 4,
+      "scrapename": "results",
+      "lastupdated": ""
+    }
+  ]
+}
