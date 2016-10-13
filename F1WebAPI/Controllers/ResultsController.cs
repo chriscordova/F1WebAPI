@@ -17,7 +17,13 @@ namespace F1WebAPI.Controllers
         {
             List<F1Results> returnData = new List<F1Results>();
 
-            string html = Functions.GetHTMLFromFile(AppDomain.CurrentDomain.BaseDirectory + "\\Resources\\results-" + year + "-" + country + "-scrape.html");
+            string html = string.Empty;
+
+            if (!country.IsNullOrEmpty())
+                html = Functions.GetHTMLFromFile(AppDomain.CurrentDomain.BaseDirectory + "\\Resources\\results-" + year + "-" + country + "-scrape.html");
+            else
+                html = Functions.GetHTMLFromFile(AppDomain.CurrentDomain.BaseDirectory + "\\Resources\\results-" + year + "-scrape.html");
+
             if (html.IsNullOrEmpty()) return null;
 
             HtmlDocument doc = new HtmlDocument();
@@ -36,13 +42,26 @@ namespace F1WebAPI.Controllers
                 }
 
                 Result raceResult = new Result();
-                raceResult.Position = n.SelectNodes(".//td[2]").FirstOrDefault().InnerText;
-                raceResult.Number = Convert.ToInt32(n.SelectNodes(".//td[3]").FirstOrDefault().InnerText);
-                raceResult.Driver = n.SelectNodes(".//td[4]//span[1]").FirstOrDefault().InnerText + " " + n.SelectNodes(".//td[4]//span[2]").FirstOrDefault().InnerText;
-                raceResult.Team = n.SelectNodes(".//td[5]").FirstOrDefault().InnerText;
-                raceResult.Laps = Convert.ToInt32(n.SelectNodes(".//td[6]").FirstOrDefault().InnerText);
-                raceResult.TimeOrRetiredResult = n.SelectNodes(".//td[7]").FirstOrDefault().InnerText;
-                raceResult.Points = Convert.ToInt32(n.SelectNodes(".//td[8]").FirstOrDefault().InnerText);
+                if (!country.IsNullOrEmpty())
+                {
+                    raceResult.Position = n.SelectNodes(".//td[2]").FirstOrDefault().InnerText;
+                    raceResult.Number = Convert.ToInt32(n.SelectNodes(".//td[3]").FirstOrDefault().InnerText);
+                    raceResult.Driver = n.SelectNodes(".//td[4]//span[1]").FirstOrDefault().InnerText + " " + n.SelectNodes(".//td[4]//span[2]").FirstOrDefault().InnerText;
+                    raceResult.Team = n.SelectNodes(".//td[5]").FirstOrDefault().InnerText;
+                    raceResult.Laps = Convert.ToInt32(n.SelectNodes(".//td[6]").FirstOrDefault().InnerText);
+                    raceResult.TimeOrRetiredResult = n.SelectNodes(".//td[7]").FirstOrDefault().InnerText;
+                    raceResult.Points = Convert.ToInt32(n.SelectNodes(".//td[8]").FirstOrDefault().InnerText);
+                }
+                else
+                {
+                    raceResult.GrandPrix = n.SelectNodes(".//td[2]").FirstOrDefault().InnerText;
+                    raceResult.Date = n.SelectNodes(".//td[3]").FirstOrDefault().InnerText;
+                    raceResult.Winner = n.SelectNodes(".//td[4]//span[1]").FirstOrDefault().InnerText + " " + n.SelectNodes(".//td[4]//span[2]").FirstOrDefault().InnerText;
+                    raceResult.Team = n.SelectNodes(".//td[5]").FirstOrDefault().InnerText;
+                    raceResult.Laps = Convert.ToInt32(n.SelectNodes(".//td[6]").FirstOrDefault().InnerText);
+                    raceResult.TimeOrRetiredResult = n.SelectNodes(".//td[7]").FirstOrDefault().InnerText;
+                }
+                
 
                 results.Add(raceResult);
             }
@@ -55,11 +74,12 @@ namespace F1WebAPI.Controllers
             return returnData;
         }
 
-        [Route("{year:int}/{country}")]
-        public IHttpActionResult GetResultByYearAndCountry(int year, string country)
+        [Route("{year:int}/{country?}")]
+        public IHttpActionResult GetResultByYearAndCountry(int year, string country = "")
         {
             List<F1Results> f1results = GetResults(year, country);
             return Ok(f1results);
         }
+
     }
 }

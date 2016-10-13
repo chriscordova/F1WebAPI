@@ -127,6 +127,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Global.asax" />
+    <Content Include="readme.txt" />
     <Content Include="Resources\Upcoming.txt" />
     <Content Include="scripts\ai.0.22.19-build00125.js" />
     <Content Include="scripts\ai.0.22.19-build00125.min.js" />
@@ -146,6 +147,7 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="ActionFilters\CustomAuthorize.cs" />
+    <Compile Include="Models\ApiResponse.cs" />
     <Compile Include="Models\DriverModel.cs" />
     <Compile Include="Models\ResultModel.cs" />
     <Compile Include="Models\SeasonModel.cs" />
@@ -157,8 +159,13 @@
     <Content Include="ApplicationInsights.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+<<<<<<< HEAD
     <Content Include="Resources\db.json" />
     <None Include="Properties\PublishProfiles\AWS F1WebAPI Publish.pubxml" />
+=======
+    <None Include="Properties\PublishProfiles\AWS Deployment.pubxml" />
+    <None Include="Properties\PublishProfiles\AWS F1WebAPI Deployment.pubxml" />
+>>>>>>> 973c7fb4331d5882116441487430c3ceb47081f5
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

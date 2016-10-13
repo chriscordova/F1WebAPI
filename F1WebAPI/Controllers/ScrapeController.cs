@@ -7,6 +7,8 @@ using System.Net.Http;
 using System.Web.Configuration;
 using System.Web.Http;
 using System.Web.Http.Filters;
+using System.Web.Http.Results;
+using F1WebAPI.Models;
 
 namespace F1WebAPI.Controllers
 {
@@ -16,7 +18,7 @@ namespace F1WebAPI.Controllers
     {
         [HttpGet()]
         [Route("seasons")]
-        public IHttpActionResult ScrapeSeasons()
+        public JsonResult<ApiResponse> ScrapeSeasons()
         {
             string[] years = Functions.GetConfigValue("yearsArray").Split(',').ToArray();
             if (years.Length > 0)
@@ -46,12 +48,12 @@ namespace F1WebAPI.Controllers
                 });
             }
 
-            return Ok();
+            return Json(new ApiResponse() { Success = true });
         }
 
         [HttpGet()]
         [Route("drivers")]
-        public IHttpActionResult ScrapeDrivers()
+        public JsonResult<ApiResponse> ScrapeDrivers()
         {
             string controllerURL = Functions.GetConfigValue("driversURL");
             if (!controllerURL.IsNullOrEmpty())
@@ -91,12 +93,35 @@ namespace F1WebAPI.Controllers
                 }       
             }
 
-            return Ok();
+            string controllerURL4 = Functions.GetConfigValue("driverBioURL");
+            if (!controllerURL4.IsNullOrEmpty())
+            {
+                string[] drivers = Functions.GetConfigValue("CurrentDrivers").Split(',').ToArray();
+                if (drivers.Length > 0)
+                {
+                    drivers.ToList().ForEach(driver =>
+                    {
+                        string controllerURL5 = controllerURL4.Replace("$name$", Functions.CleanName( driver.Replace(" ","-").ToLower()));
+                        string html = Functions.GetHTMLFromURL(controllerURL5);
+                        if (!html.IsNullOrEmpty())
+                        {
+                            string s = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Resources\\driver-bio-" + driver + "-scrape.html");
+
+                            using (StreamWriter sw = new StreamWriter(s))
+                            {
+                                sw.Write(html);
+                            }
+                        }
+                    });
+                }
+            }
+
+            return Json(new ApiResponse() { Success = true });
         }
 
         [HttpGet()]
         [Route("standings")]
-        public IHttpActionResult ScrapeStandings()
+        public JsonResult<ApiResponse> ScrapeStandings()
         {
             string[] years = Functions.GetConfigValue("yearsArray").Split(',').ToArray();
             if (years.Length > 0)
@@ -128,18 +153,19 @@ namespace F1WebAPI.Controllers
                 });
             }
 
-            return Ok();
+            return Json(new ApiResponse() { Success = true });
         }
 
         [HttpGet()]
         [Route("results")]
-        public IHttpActionResult ScrapeResults()
+        public JsonResult<ApiResponse> ScrapeResults()
         {
             string[] years = Functions.GetConfigValue("yearsArray").Split(',').ToArray();
             if (years.Length > 0)
             {
                 years.ToList().ForEach(y =>
                 {
+                    //Per Country
                     string[] countries = Functions.GetConfigValue(y + "Results").Split(',').ToArray();
                     if (countries.Length > 0)
                     {
@@ -160,10 +186,25 @@ namespace F1WebAPI.Controllers
                             }
                         });
                     }
+
+                    //Year Results
+                    string controllerURL2 = Functions.GetConfigValue("allResultsURL").Replace("$year$", y);
+                    if (!controllerURL2.IsNullOrEmpty())
+                    {
+                        string html2 = Functions.GetHTMLFromURL(controllerURL2);
+                        if (!html2.IsNullOrEmpty())
+                        {
+                            string s = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Resources\\results-" + y + "-scrape.html");
+                            using (StreamWriter sw = new StreamWriter(s))
+                            {
+                                sw.Write(html2);
+                            }
+                        }
+                    }
                 });
             }
 
-            return Ok();
+            return Json(new ApiResponse() { Success = true });
         }
     }
 }

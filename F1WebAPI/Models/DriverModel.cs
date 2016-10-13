@@ -17,6 +17,21 @@ namespace F1WebAPI.Models
         public Team Team { get; set; }
         public string ImageURL { get; set; }
         public string DriverURL { get; set; }
+        public Biography Biography { get; set; }
+    }
+
+    public class Biography
+    {
+        public string Country { get; set; }
+        public string Podiums { get; set; }
+        public int GrandPrixsEntered { get; set; }
+        public string Points { get; set; }
+        public string WorldChampionships { get; set; }
+        public string HighestRaceFinish { get; set; }
+        public string HighestGridPosition { get; set; }
+        public DateTime DateOfBirth { get; set; }
+        public int Age { get; set; }
+        public string PlaceOfBirth { get; set; }
     }
 
     public class Team

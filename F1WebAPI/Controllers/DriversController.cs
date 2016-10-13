@@ -36,16 +36,18 @@ namespace F1WebAPI.Controllers
 
             foreach (HtmlNode n in DriverNodes)
             {
+                //Driver
                 Driver driver = new Driver();
-                driver.Name = n.SelectNodes(".//h1[contains(@class, 'driver-name')]").FirstOrDefault().InnerText;
+                driver.Name = n.SelectNodes(".//h1[contains(@class, 'driver-name')]").FirstOrDefault().InnerText.Replace("  "," ").Trim();
                 driver.DriverURL = baseURL + n.Attributes[0].Value;
                 driver.DriverNumber = Convert.ToInt32(n.SelectNodes(".//div[contains(@class, 'driver-number')]").FirstOrDefault().InnerText);
                 driver.ImageURL = baseURL + n.SelectNodes(".//img[contains(@class, 'fom-image')]").FirstOrDefault().Attributes.Where(s => s.Name == "src").FirstOrDefault().Value;
 
+
+                //Team
                 Team team = new Team();
                 string teamNameNode = n.SelectNodes(".//p[contains(@class, 'driver-team')]").FirstOrDefault().InnerText.Trim();
 
-                //get team url and fill Team class here
                 string teamHTML = Functions.GetHTMLFromFile(AppDomain.CurrentDomain.BaseDirectory + "\\Resources\\team-"+ Functions.GetScrapedTeamName(teamNameNode) + "-scrape.html");
 
                 HtmlDocument teamDoc = new HtmlDocument();
@@ -69,7 +71,35 @@ namespace F1WebAPI.Controllers
                     team.FastestLaps = t.SelectNodes(".//tr[11]//td").FirstOrDefault().InnerText;
                 }
 
-                driver.Team = team; 
+                driver.Team = team;
+
+                //Driver Bio
+                Biography biography = new Biography();
+
+                string bioHTML = Functions.GetHTMLFromFile(AppDomain.CurrentDomain.BaseDirectory + "\\Resources\\driver-bio-" + driver.Name + "-scrape.html");
+
+                HtmlDocument bioDoc = new HtmlDocument();
+                bioDoc.LoadHtml(bioHTML.CleanHTML(false));
+
+                var bioNodes = bioDoc.DocumentNode.SelectNodes("//table[contains(@class, 'stat-list')]").ToList();
+
+                foreach (HtmlNode t in bioNodes)
+                {
+                    biography.Country = t.SelectNodes(".//tr[2]//td").FirstOrDefault().InnerText;
+                    biography.Podiums = t.SelectNodes(".//tr[3]//td").FirstOrDefault().InnerText;
+                    biography.Points = t.SelectNodes(".//tr[4]//td").FirstOrDefault().InnerText;
+                    biography.GrandPrixsEntered = Convert.ToInt32(t.SelectNodes(".//tr[5]//td").FirstOrDefault().InnerText);
+                    biography.WorldChampionships = t.SelectNodes(".//tr[6]//td").FirstOrDefault().InnerText;
+                    biography.HighestRaceFinish = t.SelectNodes(".//tr[7]//td").FirstOrDefault().InnerText;
+                    biography.HighestGridPosition = t.SelectNodes(".//tr[8]//td").FirstOrDefault().InnerText;
+                    biography.DateOfBirth = Functions.FormatDate( t.SelectNodes(".//tr[9]//td").FirstOrDefault().InnerText );
+                    biography.Age = Functions.GetAge(biography.DateOfBirth);
+                    biography.PlaceOfBirth = t.SelectNodes(".//tr[10]//td").FirstOrDefault().InnerText;
+                }
+
+                driver.Biography = biography;
+
+
 
                 allDrivers.Add(driver);
             }
