@@ -158,8 +158,7 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Resources\db.json" />
-    <None Include="Properties\PublishProfiles\AWS Deployment.pubxml" />
-    <None Include="Properties\PublishProfiles\AWS F1WebAPI Deployment.pubxml" />
+    <None Include="Properties\PublishProfiles\AWS F1WebAPI Publish.pubxml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
