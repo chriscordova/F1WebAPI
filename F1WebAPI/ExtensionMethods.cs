@@ -87,16 +87,24 @@ namespace ExtensionMethods
             string sReturn = string.Empty;
             string baseURL = GetConfigValue("baseURL");
 
-            HttpWebRequest request = (HttpWebRequest)WebRequest.Create(baseURL + controllerURL);
-            HttpWebResponse response = (HttpWebResponse)request.GetResponse();
-
-            using (Stream d = response.GetResponseStream())
+            try
             {
-                using (StreamReader r = new StreamReader(d))
+                HttpWebRequest request = (HttpWebRequest)WebRequest.Create(baseURL + controllerURL);
+                HttpWebResponse response = (HttpWebResponse)request.GetResponse();
+
+                using (Stream d = response.GetResponseStream())
                 {
-                    sReturn = r.ReadToEnd();
+                    using (StreamReader r = new StreamReader(d))
+                    {
+                        sReturn = r.ReadToEnd();
+                    }
                 }
             }
+            catch (Exception ex)
+            {
+                return sReturn;
+            }
+            
 
             return sReturn;
         }
