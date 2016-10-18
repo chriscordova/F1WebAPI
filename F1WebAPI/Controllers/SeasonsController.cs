@@ -11,6 +11,7 @@ using Newtonsoft.Json.Converters;
 using System.IO;
 using Newtonsoft.Json;
 using HtmlAgilityPack;
+using System.Web.Script.Serialization;
 
 namespace F1WebAPI.Controllers
 {
@@ -18,6 +19,39 @@ namespace F1WebAPI.Controllers
     public class SeasonsController : ApiController
     {
         List<F1Season> seasons = GetSeasonsData();
+
+        public static List<OrderedSeason> GetSeasonCountryOrdered(string year)
+        {
+            List<OrderedSeason> aReturn = new List<OrderedSeason>();
+            string html = Functions.GetHTMLFromFile(AppDomain.CurrentDomain.BaseDirectory + "\\Resources\\seasons-" + year + "-scrape.html");
+            if (html.IsNullOrEmpty()) return aReturn;
+
+            HtmlDocument doc = new HtmlDocument();
+            doc.LoadHtml(html.CleanHTML(false));
+
+            var aSections = doc.DocumentNode.SelectNodes("//div[contains(@class, 'article-columns')]//div").ToList();
+            foreach (var section in aSections)
+            {
+                bool bRaced = false;
+                string href = section.SelectNodes(".//a").FirstOrDefault().Attributes.Where(a => a.Name == "href").ToList().FirstOrDefault().Value;
+                var raceWinnerNode = section.SelectNodes(".//p[contains(@class, 'race-winner')]");
+                if (!raceWinnerNode.IsNull<HtmlNodeCollection>()) bRaced = true;
+
+                string sYearURL = Functions.GetConfigValue("seasonsURL").Replace("$year$", year).Replace(".html", "");
+                string sCountry = href.Replace(sYearURL + "/", "").Replace(".html","");
+                if (!sCountry.Contains("webcal:"))
+                {
+                    OrderedSeason item = new OrderedSeason();
+                    item.CountryName = sCountry;
+                    item.Complete = bRaced;
+                    item.Year = Convert.ToInt32( year );
+
+                    aReturn.Add(item);
+                }
+            }
+
+            return aReturn;
+        }
 
         public static List<F1Season> GetSeasonsData()
         {
@@ -30,12 +64,13 @@ namespace F1WebAPI.Controllers
             {
                 years.ToList().ForEach(year =>
                 {
-                    string[] countries = Functions.GetConfigValue("countryArray").Split(',').ToArray();
+                    //string[] countries = Functions.GetConfigValue("countryArray").Split(',').ToArray();
+                    var countries = GetSeasonCountryOrdered(year).ToArray();
                     if (countries.Length > 0)
                     {
                         countries.ToList().ForEach(country =>
                         {
-                            string html = Functions.GetHTMLFromFile(AppDomain.CurrentDomain.BaseDirectory + "\\Resources\\seasons-" + year + "-" + country + "-scrape.html");
+                            string html = Functions.GetHTMLFromFile(AppDomain.CurrentDomain.BaseDirectory + "\\Resources\\seasons-" + year + "-" + country.CountryName + "-scrape.html");
                             if (html.IsNullOrEmpty()) return; 
 
                             HtmlDocument doc = new HtmlDocument();
@@ -50,7 +85,8 @@ namespace F1WebAPI.Controllers
                             season.DateTo = dateArray[1].Trim().Substring(0, 6);
                             season.Month = dateArray[1].Trim().Substring(7, 3);
                             season.Year = Convert.ToInt32(year);
-
+                            season.Complete = country.Complete;
+                            
                             var scheduleNodes = doc.DocumentNode.SelectNodes("//dl[contains(@class, 'race-data-dl')]").FirstOrDefault();
                             
                             var eventNodes = scheduleNodes.SelectNodes(".//dt[contains(@class, 'race-data-item')]").ToList();
@@ -70,7 +106,7 @@ namespace F1WebAPI.Controllers
                             season.Schedule = schedules;
 
                             Country racecountry = new Country();
-                            racecountry.Name = country;
+                            racecountry.Name = country.CountryName;
 
                             var circuitNodes = doc.DocumentNode.SelectNodes("//div[contains(@class, 'circuit-info-container')]").ToList();
 

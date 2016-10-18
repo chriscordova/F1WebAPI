@@ -26,6 +26,7 @@ namespace F1WebAPI.Models
         public string DateTo { get; set; }
         public string Month { get; set; }
         public List<Schedule> Schedule { get; set; }
+        public bool Complete { get; set; }
     }
 
     public class Country
@@ -38,6 +39,13 @@ namespace F1WebAPI.Models
         public string LapRecord { get; set; }
         public string CircuitImageURL { get; set; }
 
+    }
+
+    public class OrderedSeason
+    {
+        public string CountryName { get; set; }
+        public bool Complete { get; set; }
+        public int Year { get; set; }
     }
 
 }

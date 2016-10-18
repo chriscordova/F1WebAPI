@@ -43,6 +43,21 @@ namespace F1WebAPI.Controllers
                     });
                 }
 
+                //get the year championship front page
+                string seasonYearURL = Functions.GetConfigValue("seasonsURL").Replace("$year$", currentyear);
+                if (!seasonYearURL.IsNullOrEmpty())
+                {
+                    string seasonYearHTML = Functions.GetHTMLFromURL(seasonYearURL);
+                    if (!seasonYearHTML.IsNullOrEmpty())
+                    {
+                        string s = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Resources\\seasons-" + currentyear + "-scrape.html");
+                        using (StreamWriter sw = new StreamWriter(s))
+                        {
+                            sw.Write(seasonYearHTML);
+                        }
+                    }
+                }
+
                 return Json(new ApiResponse() { Success = true });
             }
 
@@ -51,6 +66,21 @@ namespace F1WebAPI.Controllers
             {
                 years.ToList().ForEach(y =>
                 {
+                    //get the year championship front page
+                    string seasonYearURL = Functions.GetConfigValue("seasonsURL").Replace("$year$", y);
+                    if (!seasonYearURL.IsNullOrEmpty())
+                    {
+                        string seasonYearHTML = Functions.GetHTMLFromURL(seasonYearURL);
+                        if (!seasonYearHTML.IsNullOrEmpty())
+                        {
+                            string s = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Resources\\seasons-" + y + "-scrape.html");
+                            using (StreamWriter sw = new StreamWriter(s))
+                            {
+                                sw.Write(seasonYearHTML);
+                            }
+                        }
+                    }
+
                     string[] countries = Functions.GetConfigValue("countryArray").Split(',').ToArray();
                     if (countries.Length > 0)
                     {
